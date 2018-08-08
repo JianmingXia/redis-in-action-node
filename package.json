@@ -1,0 +1,19 @@
+{
+    "name": "redis-in-action-node",
+    "version": "1.0.0",
+    "description": "redis-in-action nodejs code",
+    "main": "index.js",
+    "author": "Ryoma",
+    "license": "MIT",
+    "scripts": {
+        "test": "./node_modules/.bin/mocha"
+    },
+    "dependencies": {
+        "ioredis": "^3.2.2"
+    },
+    "devDependencies": {
+        "@types/ioredis": "^3.2.14",
+        "mocha": "^5.2.0",
+        "should": "^13.2.3"
+    }
+}
