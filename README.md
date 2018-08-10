@@ -19,7 +19,7 @@ npm run test
 - *.test.js is test code
 
 ## Test Background
-- Windows 10 and node v9.6.1
+- Windows 10 and node v8.11.3
 
 ## Note
 We use sleep in test code, In my opinion, don't use sleep in our service code, it's will block our service response.

@@ -6,7 +6,7 @@
     "author": "Ryoma",
     "license": "MIT",
     "scripts": {
-        "test": "./node_modules/.bin/mocha"
+        "test": "./node_modules/.bin/mocha --timeout 20000"
     },
     "dependencies": {
         "ioredis": "^3.2.2",

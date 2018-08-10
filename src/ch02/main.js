@@ -228,7 +228,8 @@ async function canCache(client, request) {
 
 // Config just for test, you can set Config.limit
 class Config { }
-Config.LIMIT = 1000000;
+const LIMIT = 1000000
+Config.LIMIT = LIMIT;
 
 module.exports = {
     checkToken,
@@ -240,5 +241,7 @@ module.exports = {
     scheduleRowCache,
     cacheRows,
     rescaleViewed,
+    canCache,
     Config,
+    LIMIT
 };
