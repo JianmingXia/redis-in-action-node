@@ -9,7 +9,8 @@
         "test": "./node_modules/.bin/mocha"
     },
     "dependencies": {
-        "ioredis": "^3.2.2"
+        "ioredis": "^3.2.2",
+        "uuid": "^3.3.2"
     },
     "devDependencies": {
         "@types/ioredis": "^3.2.14",

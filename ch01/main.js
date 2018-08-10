@@ -1,14 +1,15 @@
+const {
+    currentTimestamp
+} = require('../utils');
+
 const ONE_WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
 const VOTE_SCORE = 432;
 const ARTICLES_PER_PAGE = 25;
 
-const current_timestamp = () => {
-    return Math.floor(Date.now() / 1000);
-}
-
-const articleVote = async function (client, user, article) {
+// 1-6
+async function articleVote(client, user, article) {
     try {
-        const cutoff = current_timestamp() - ONE_WEEK_IN_SECONDS;
+        const cutoff = currentTimestamp() - ONE_WEEK_IN_SECONDS;
 
         if (await client.zscore('time:', article) < cutoff) {
             return;
@@ -22,9 +23,10 @@ const articleVote = async function (client, user, article) {
     } catch (err) {
         console.log(err);
     }
-};
+}
 
-const postArticle = async function (client, user, title, link) {
+// 1-7
+async function postArticle(client, user, title, link) {
     try {
         const articleId = await client.incr('article:');
 
@@ -37,21 +39,22 @@ const postArticle = async function (client, user, title, link) {
             title,
             link,
             'poster': user,
-            'time': current_timestamp(),
+            'time': currentTimestamp(),
             'votes': 1
         });
 
-        await client.zadd('score:', current_timestamp() + VOTE_SCORE, article);
-        await client.zadd('time:', current_timestamp(), article);
+        await client.zadd('score:', currentTimestamp() + VOTE_SCORE, article);
+        await client.zadd('time:', currentTimestamp(), article);
 
         return articleId;
     } catch (err) {
         console.log(err);
         return 0;
     }
-};
+}
 
-const getArticles = async function (client, page, order = 'score:') {
+// 1-8
+async function getArticles(client, page, order = 'score:') {
     try {
         const start = (page - 1) * ARTICLES_PER_PAGE;
         const end = start + ARTICLES_PER_PAGE - 1;
@@ -70,9 +73,10 @@ const getArticles = async function (client, page, order = 'score:') {
         console.log(err);
         return [];
     }
-};
+}
 
-const addRemoveGroups = async function (client, articleId, toAdd = [], toRemove = []) {
+// 1-9
+async function addRemoveGroups(client, articleId, toAdd = [], toRemove = []) {
     try {
         const article = `article:${articleId}`;
 
@@ -86,9 +90,10 @@ const addRemoveGroups = async function (client, articleId, toAdd = [], toRemove 
         console.log(err);
         return [];
     }
-};
+}
 
-const getGroupArticles = async function (client, group, page, order='score:') {
+// 1-10
+async function getGroupArticles(client, group, page, order = 'score:') {
     try {
         const key = `${order}${group}`;
 
@@ -102,7 +107,7 @@ const getGroupArticles = async function (client, group, page, order='score:') {
         console.log(err);
         return [];
     }
-};
+}
 
 module.exports = {
     articleVote,

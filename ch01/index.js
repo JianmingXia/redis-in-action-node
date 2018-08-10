@@ -1,8 +1,10 @@
 const Redis = require('ioredis');
 const ch01 = require('./main');
 
-const run = async () => {
-    const redis = new Redis();
+async function run() {
+    const redis = new Redis({
+        db: 15
+    });
     redis.on("error", (error) => {
         debug("Redis connection error", error);
     });

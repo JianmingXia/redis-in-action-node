@@ -1,11 +1,13 @@
 describe('Chapter 1', function () {
+    require('should');
     const Redis = require('ioredis');
-    const should = require('should');
     const ch01 = require('../ch01/main');
 
     let redis;
     before(async () => {
-        redis = new Redis();
+        redis = new Redis({
+            db: 15
+        });
         await redis.flushdb();
         redis.on("error", (error) => {
             debug("Redis connection error", error);
