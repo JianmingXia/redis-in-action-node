@@ -1,7 +1,7 @@
 describe('Chapter 1', function () {
     require('should');
     const Redis = require('ioredis');
-    const ch01 = require('../ch01/main');
+    const ch01 = require('../src/ch01/main');
 
     let redis;
     before(async () => {

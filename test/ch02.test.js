@@ -1,7 +1,7 @@
 describe('Chapter 2', function () {
     require('should');
     const Redis = require('ioredis');
-    const ch02 = require('../ch02/main');
+    const ch02 = require('../src/ch02/main');
     const uuid4 = require('uuid/v4');
 
     let redis;

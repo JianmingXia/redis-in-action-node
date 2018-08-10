@@ -9,7 +9,7 @@ async function checkToken(client, token) {
     try {
         return await client.hget('login:', token);
     } catch (err) {
-        console.log(err);
+        console.error(err);
         return '';
     }
 }
@@ -27,7 +27,7 @@ async function checkToken(client, token) {
 //             await client.zremrangebyrank(`viewed:${token}`, 0, -26);
 //         }
 //     } catch (err) {
-//         console.log(err);
+//         console.error(err);
 //     }
 // }
 
@@ -52,7 +52,7 @@ async function cleanSessions(client) {
         await client.hdel('login:', ...tokens);
         await client.zrem('recent:', ...tokens);
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 }
 
@@ -65,7 +65,7 @@ async function addToCart(client, session, item, count) {
             await client.hset(`cart:${session}`, item, count);
         }
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 }
 
@@ -91,7 +91,7 @@ async function cleanFullSessions(client) {
         await client.hdel('login:', ...sessions);
         await client.zrem('recent:', ...sessions);
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 }
 
@@ -112,7 +112,7 @@ async function cacheRequest(client, request, callback) {
 
         return content;
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 }
 
@@ -122,7 +122,7 @@ async function scheduleRowCache(client, rowId, delay) {
         await client.zadd('delay:', delay, rowId);
         await client.zadd('schedule:', currentTimestamp(), rowId);
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 }
 
@@ -165,7 +165,7 @@ async function cacheRows(client) {
         await client.zadd('schedule:', now + parseInt(delay, 10), rowId);
         await client.set(`inv:${rowId}`, JSON.stringify(row.toDict()));
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 }
 
@@ -182,7 +182,7 @@ async function updateToken(client, token, user, item = '') {
             await client.zincrby('viewed:', -1, item);
         }
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 }
 
@@ -194,7 +194,7 @@ async function rescaleViewed(client) {
         // xxxxxx test!!!!
         await client.zinterstore('viewed:', );
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 }
 
@@ -222,12 +222,12 @@ async function canCache(client, request) {
 
         return rank && rank < 10000;
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 }
 
 // Config just for test, you can set Config.limit
-class Config {}
+class Config { }
 Config.LIMIT = 1000000;
 
 module.exports = {

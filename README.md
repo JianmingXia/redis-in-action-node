@@ -11,9 +11,12 @@ npm run test
 ```
 
 ## About Code
+### src
 - ch**/main.js is source code in NodeJS
 - ch**/index.js just used for debug
-- test/*.test.js is test code
+
+### test
+- *.test.js is test code
 
 ## Test Background
 - Windows 10 and node v9.6.1
