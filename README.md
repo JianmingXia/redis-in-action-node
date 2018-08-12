@@ -1,4 +1,4 @@
-Redis in Action (NodeJS)
+Redis in Action (NodeJS Example code for the book)
 
 ## Install
 ```
@@ -7,7 +7,12 @@ yarn install
 
 ## Run Test
 ```
-npm run test
+npm test
+```
+
+if you want to test one file, for example:
+```
+npm test .\test\ch04.test.js
 ```
 
 ## About Code
@@ -18,9 +23,12 @@ npm run test
 ### test
 - *.test.js is test code
 
+### Other programming languages Code
+[Example Code](https://github.com/josiahcarlson/redis-in-action)
+
 ## Test Background
 - Windows 10 and node v8.11.3
 
 ## Note
-We use sleep in test code, In my opinion, don't use sleep in our service code, it's will block our service response.
+We use sleep in test code, In my opinion, don't use sleep func in our service code, it's will block our service response.
 We use sleep just for test.

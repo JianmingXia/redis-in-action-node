@@ -1,7 +1,11 @@
 const crypto = require('crypto');
 
-function currentTimestamp() {
-    return Math.floor(Date.now() / 1000);
+function currentTimestamp(isMsec = false) {
+    if(isMsec) {
+        return Date.now();
+    } else {
+        return Math.floor(Date.now() / 1000);
+    }
 }
 
 function getHash(str) {
