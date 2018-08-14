@@ -30,5 +30,9 @@ npm test .\test\ch04.test.js
 - Windows 10 and node v8.11.3
 
 ## Note
+### sleep func
 We use sleep in test code, In my opinion, don't use sleep func in our service code, it's will block our service response.
 We use sleep just for test.
+
+### Transaction and Pipeline
+Now I'm using ioredis, you can see the [transaction](https://github.com/luin/ioredis#transaction) and [pipeline](https://github.com/luin/ioredis#pipelining).
