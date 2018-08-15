@@ -1,5 +1,6 @@
-const { currentTimestamp, getHash } = require('../utils');
+const Utils = require('../utils');
 const URL = require('url');
+const { Config } = require('../config');
 
 // 2-1
 async function checkToken(client, token) {
@@ -15,7 +16,7 @@ async function checkToken(client, token) {
 // the new code in 2-9
 // async function updateToken(client, token, user, item = '') {
 //     try {
-//         const timestamp = currentTimestamp();
+//         const timestamp = Utils.currentTimestamp();
 //         await client.hset('login:', token, user);
 //         await client.zadd('recent:', timestamp, token);
 
@@ -99,7 +100,7 @@ async function cacheRequest(client, request, callback) {
       return callback(request);
     }
 
-    const pageKey = 'cache:' + getHash(request);
+    const pageKey = 'cache:' + Utils.getHash(request);
     let content = await client.get(pageKey);
 
     if (!content) {
@@ -117,7 +118,7 @@ async function cacheRequest(client, request, callback) {
 async function scheduleRowCache(client, rowId, delay) {
   try {
     await client.zadd('delay:', delay, rowId);
-    await client.zadd('schedule:', currentTimestamp(), rowId);
+    await client.zadd('schedule:', Utils.currentTimestamp(), rowId);
   } catch (err) {
     console.error(err);
   }
@@ -132,7 +133,7 @@ class Inventory {
     return {
       id: this.rowId,
       data: 'data to cache...',
-      cached: currentTimestamp(),
+      cached: Utils.currentTimestamp(),
     };
   }
 }
@@ -142,7 +143,7 @@ class Inventory {
 async function cacheRows(client) {
   try {
     const next = await client.zrange('schedule:', 0, 0, 'WITHSCORES');
-    const now = currentTimestamp();
+    const now = Utils.currentTimestamp();
 
     if (next.length === 0 || next[1] > now) {
       return;
@@ -169,7 +170,7 @@ async function cacheRows(client) {
 // 2-9
 async function updateToken(client, token, user, item = '') {
   try {
-    const timestamp = currentTimestamp();
+    const timestamp = Utils.currentTimestamp();
     await client.hset('login:', token, user);
     await client.zadd('recent:', timestamp, token);
 
@@ -223,10 +224,6 @@ async function canCache(client, request) {
   }
 }
 
-// Config just for test, you can set Config.limit
-class Config {}
-const LIMIT = 1000000;
-Config.LIMIT = LIMIT;
 
 module.exports = {
   checkToken,
@@ -239,6 +236,4 @@ module.exports = {
   cacheRows,
   rescaleViewed,
   canCache,
-  Config,
-  LIMIT,
 };

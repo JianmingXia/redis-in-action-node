@@ -1,7 +1,7 @@
 const Redis = require('ioredis');
 const ch02 = require('./main');
 const uuid4 = require('uuid/v4');
-const { sleep } = require('../utils');
+const Utils = require('../utils');
 
 async function run() {
   const redis = new Redis({
@@ -82,7 +82,7 @@ async function run() {
   const invResult1 = await redis.get('inv:itemX');
   console.log(`Our cached data looks like: ${invResult1}`);
   console.log(`We'll check again in 5 seconds...`);
-  await sleep(5000);
+  await Utils.sleep(5000);
   await ch02.cacheRows(redis);
   const invResult2 = await redis.get('inv:itemX');
   console.log(`Notice that the data has changed...:${invResult2}`);

@@ -1,13 +1,13 @@
-const { currentTimestamp } = require('../utils');
+const Utils = require('../utils');
 
 // 4-5
 async function listItem(client, itemId, sellerId, price) {
   try {
     const inventory = `inventory:${sellerId}`;
     const item = `${itemId}.${sellerId}`;
-    const end = currentTimestamp() + 5;
+    const end = Utils.currentTimestamp() + 5;
 
-    while (currentTimestamp() < end) {
+    while (Utils.currentTimestamp() < end) {
       client.watch(inventory);
 
       if (false === (await client.sismember(inventory, itemId))) {
@@ -42,9 +42,9 @@ async function purchaseItem(client, buyerId, itemId, sellerId, lprice) {
 
     const inventory = `inventory:${buyerId}`;
     const item = `${itemId}.${sellerId}`;
-    const end = currentTimestamp() + 10;
+    const end = Utils.currentTimestamp() + 10;
 
-    while (currentTimestamp() < end) {
+    while (Utils.currentTimestamp() < end) {
       client.watch(`market:`, buyer);
 
       const price = parseInt(await client.zscore(`market:`, item), 10);
@@ -76,7 +76,7 @@ async function purchaseItem(client, buyerId, itemId, sellerId, lprice) {
 // for test
 async function updateToken(client, token, user, item = '') {
   try {
-    const timestamp = currentTimestamp();
+    const timestamp = Utils.currentTimestamp();
     await client.hset('login:', token, user);
     await client.zadd('recent:', timestamp, token);
 
@@ -93,7 +93,7 @@ async function updateToken(client, token, user, item = '') {
 // 4-8
 async function updateTokenPipeline(client, token, user, item = '') {
   try {
-    const timestamp = currentTimestamp();
+    const timestamp = Utils.currentTimestamp();
 
     const pipe = client.pipeline();
     pipe.hset('login:', token, user);
@@ -117,14 +117,14 @@ async function benchmarkUpdateToken(client, duration) {
     for (let func of [updateToken, updateTokenPipeline]) {
       let count = 0;
 
-      const start = currentTimestamp(true);
+      const start = Utils.currentTimestamp(true);
       const end = start + duration * 1000;
-      while (currentTimestamp(true) < end) {
+      while (Utils.currentTimestamp(true) < end) {
         count += 1;
         await func(client, 'token', 'user', 'item');
       }
 
-      const delta = currentTimestamp(true) - start;
+      const delta = Utils.currentTimestamp(true) - start;
       console.log(
         `func.name:${
           func.name

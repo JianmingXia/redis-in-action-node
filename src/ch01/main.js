@@ -1,4 +1,4 @@
-const { currentTimestamp } = require('../utils');
+const Utils = require('../utils');
 
 const ONE_WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
 const VOTE_SCORE = 432;
@@ -7,7 +7,7 @@ const ARTICLES_PER_PAGE = 25;
 // 1-6
 async function articleVote(client, user, article) {
   try {
-    const cutoff = currentTimestamp() - ONE_WEEK_IN_SECONDS;
+    const cutoff = Utils.currentTimestamp() - ONE_WEEK_IN_SECONDS;
 
     if ((await client.zscore('time:', article)) < cutoff) {
       return;
@@ -37,12 +37,12 @@ async function postArticle(client, user, title, link) {
       title,
       link,
       poster: user,
-      time: currentTimestamp(),
+      time: Utils.currentTimestamp(),
       votes: 1,
     });
 
-    await client.zadd('score:', currentTimestamp() + VOTE_SCORE, article);
-    await client.zadd('time:', currentTimestamp(), article);
+    await client.zadd('score:', Utils.currentTimestamp() + VOTE_SCORE, article);
+    await client.zadd('time:', Utils.currentTimestamp(), article);
 
     return articleId;
   } catch (err) {

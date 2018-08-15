@@ -2,6 +2,7 @@ describe('Chapter 2', function() {
   require('should');
   const Redis = require('ioredis');
   const ch02 = require('../src/ch02/main');
+  const { Config, LIMIT } = require('../src/config');
   const uuid4 = require('uuid/v4');
   const { sleep } = require('../src/utils');
 
@@ -31,14 +32,14 @@ describe('Chapter 2', function() {
     });
 
     it(`Let's drop the maximum number of cookies to 0 to clean them out: len = 0`, async () => {
-      ch02.Config.LIMIT = 0;
+      Config.LIMIT = 0;
 
       await ch02.cleanSessions(redis);
 
       const len = await redis.hlen('login:');
       len.should.equal(0);
 
-      ch02.Config.LIMIT = ch02.LIMIT;
+      Config.LIMIT = LIMIT;
     });
   });
 
@@ -53,13 +54,13 @@ describe('Chapter 2', function() {
     });
 
     it(`Let's clean out our sessions and carts: {}`, async () => {
-      ch02.Config.LIMIT = 0;
+      Config.LIMIT = 0;
 
       await ch02.cleanFullSessions(redis);
       const res = await redis.hgetall(`cart:${token}`);
       JSON.stringify(res).should.equal('{}');
 
-      ch02.Config.LIMIT = ch02.LIMIT;
+      Config.LIMIT = LIMIT;
     });
   });
 
